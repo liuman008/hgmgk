@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.PetcircleMapper">
+
+    <!-- 新增数据 -->
+    <insert id="insertPetcircle" parameterType="com.lingfeng.pets.entity.PetcircleEntity">
+        INSERT INTO com_lingfeng_petcircle(
+               id,
+               content,
+               address,
+               userId,
+               pointRatio,
+               commentNum,
+               longitude,
+               latitude,
+               distance,
+               create_date
+        )VALUES(
+               #{id, jdbcType=VARCHAR},
+               #{content, jdbcType=VARCHAR},
+               #{address, jdbcType=VARCHAR},
+               #{userId, jdbcType=VARCHAR},
+               #{pointRatio, jdbcType=INTEGER},
+               #{commentNum, jdbcType=INTEGER},
+               #{longitude, jdbcType=DOUBLE},
+               #{latitude, jdbcType=DOUBLE},
+               #{distance, jdbcType=DOUBLE},
+               #{create_date, jdbcType=TIMESTAMP}
+        )
+    
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deletePetcircle" parameterType="com.lingfeng.pets.entity.PetcircleEntity">
+            UPDATE 
+                com_lingfeng_petcircle
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updatePetcircle" parameterType="com.lingfeng.pets.entity.PetcircleEntity">
+        UPDATE
+            com_lingfeng_petcircle
+        <set>
+            <if test="content != null and content !=''">
+            content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null and address !=''">
+            address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null and userId !=''">
+            userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="pointRatio != null and pointRatio !=''">
+            pointRatio = #{pointRatio,jdbcType=INTEGER},
+            </if>
+            <if test="commentNum != null and commentNum !=''">
+            commentNum = #{commentNum, jdbcType=INTEGER},
+            </if>
+            <if test="is_popular != null and is_popular !=''">
+            is_popular = #{is_popular, jdbcType=INTEGER},
+            </if>
+            <if test="longitude != null and longitude !=''">
+            longitude = #{longitude, jdbcType=DOUBLE},
+            </if>
+            <if test="latitude != null and latitude !=''">
+            latitude = #{latitude, jdbcType=DOUBLE},
+            </if>
+            <if test="distance != null and distance !=''">
+            distance = #{distance, jdbcType=DOUBLE},
+            </if>
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+        </set>
+            WHERE
+                id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询所有 -->
+    <select id="selectAllPetcircle" resultType="com.lingfeng.pets.entity.PetcircleEntity">
+            SELECT
+               id,
+               content,
+               address,
+               userId,
+               pointRatio,
+               commentNum,
+               is_popular,
+               longitude,
+               latitude,
+               distance,
+               create_date
+            FROM
+               com_lingfeng_petcircle
+            WHERE
+                is_del = 0
+    </select>
+    
+    <!-- 模糊查询 -->
+    <select id="selectlikePetcircle" parameterType="com.lingfeng.pets.entity.PetcircleEntity" resultType="com.lingfeng.pets.entity.PetcircleEntity">
+            SELECT
+               id,
+               content,
+               address,
+               userId,
+               pointRatio,
+               commentNum,
+               is_popular,
+               longitude,
+               latitude,
+               distance,
+               create_date
+            FROM
+               com_lingfeng_petcircle
+            <where>
+                is_del = 0
+                <if test="id != null and id !=''">
+                AND id = #{id,jdbcType=VARCHAR}
+                </if>
+                 <if test="content != null and content !=''">
+                AND content = #{content,jdbcType=VARCHAR}
+                </if>
+                <if test="address != null and address !=''">
+                AND address LIKE "%"#{address}"%"
+                </if>
+                <if test="userId != null and userId !=''">
+                AND userId = #{userId,jdbcType=VARCHAR}
+                </if>
+                <if test="is_popular != null and is_popular !=''">
+                AND is_popular = #{is_popular, jdbcType=INTEGER}
+                </if>
+                <if test="create_date != null and create_date !=''">
+                AND create_date like concat(concat("%",#{create_date}),"%")
+                </if>
+            </where>
+             ORDER BY create_date DESC
+             <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+               </if>
+    </select>
+    
+    
+    <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_petcircle
+        </select>
+</mapper>

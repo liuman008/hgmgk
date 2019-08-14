@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.UserRoleMapper">
+    <insert id="addUserRole" parameterType="com.lingfeng.pets.entity.UserRoleEntity">
+        INSERT INTO com_lingfeng_user_role(
+            id,
+            userId,
+            roleId,
+            create_date
+        )
+        VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{userId, jdbcType=VARCHAR},
+            #{roleId, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    
+    <update id="deleteUserRole"  parameterType="com.lingfeng.pets.entity.UserRoleEntity">
+        UPDATE 
+             com_lingfeng_user_role
+         SET
+             lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+             lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+             is_del = 1
+         WHERE
+             id = #{id, jdbcType=VARCHAR}
+    
+    </update>
+    
+    <update id="updateUserRole"  parameterType="com.lingfeng.pets.entity.UserRoleEntity">
+        UPDATE
+            com_lingfeng_user_role
+        <set>
+            <if test="userId != null and userId !=''">
+             userId = #{userId, jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null and roleId !=''">
+            roleId = #{roleId, jdbcType=VARCHAR},
+            </if>
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+        </set>
+        WHERE
+            id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectUserRoleALL" resultType="com.lingfeng.pets.entity.UserRoleEntity">
+        SELECT
+            id,
+            userId,
+            roleId,
+            create_date
+        FROM
+            com_lingfeng_user_role
+        WHERE
+            is_del = 0
+    </select>
+    
+     <select id="selectLikeUserRole"  parameterType="com.lingfeng.pets.entity.UserRoleEntity" resultType="com.lingfeng.pets.entity.UserRoleEntity">
+        SELECT
+            id,
+            userId,
+            roleId,
+            create_date
+        FROM
+            com_lingfeng_user_role
+        <where>
+            is_del = 0
+            <if test="userId != null and userId !=''">
+             AND userId = #{userId, jdbcType=VARCHAR}
+            </if>
+            <if test="roleId != null and roleId !=''">
+            AND roleId = #{roleId, jdbcType=VARCHAR}
+            </if>
+        </where>
+          ORDER BY create_date DESC
+         <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+          LIMIT #{currIndex},#{pageSize}
+         </if> 
+    </select>
+    
+      <!-- 查询总行数 -->
+     <select id="selectCount" resultType="int">
+            select count(*) from com_lingfeng_user
+     </select>
+</mapper>

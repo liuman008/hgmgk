@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.WalkDogChargeMapper">
+    <insert id="addWalkDogCharge" parameterType="com.lingfeng.pets.entity.WalkDogChargeEntity">
+        INSERT INTO com_lingfeng_walkDagcharge(
+            id,
+            physique,
+            money,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{physique, jdbcType=VARCHAR},
+            #{money, jdbcType=DOUBLE},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+        
+    </insert>
+    
+    
+    <update id="deleteWalkDogCharge" parameterType="com.lingfeng.pets.entity.WalkDogChargeEntity">
+           UPDATE 
+                com_lingfeng_walkDagcharge
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateWalkDogCharge" parameterType="com.lingfeng.pets.entity.WalkDogChargeEntity">
+            UPDATE 
+                com_lingfeng_walkDagcharge
+             <set>
+                <if test="physique != null and physique !=''">
+                physique = #{physique, jdbcType=VARCHAR},
+                </if>
+              <if test="money != null and money !=''">
+                money = #{money, jdbcType=DOULE},
+                </if>
+                update_date = #{update_date, jdbcType=TIMESTAMP}
+             </set>
+           WHERE
+               id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectWalkDogChargeALL" resultType="com.lingfeng.pets.entity.WalkDogChargeEntity">
+        SELECT
+            id,
+            physique,
+            money,
+            create_date
+        FROM
+            com_lingfeng_walkDagcharge
+        WHERE
+            is_del = 0
+    </select>
+    
+    <select id="selectWalkDogChargeALLById" resultType="com.lingfeng.pets.entity.WalkDogChargeEntity" parameterType="String">
+         SELECT
+            id,
+            physique,
+            money,
+            create_date
+        FROM
+            com_lingfeng_walkDagcharge
+         WHERE
+            is_del = 0
+         AND id = #{id, jdbcType=VARCHAR}
+    </select>
+</mapper>
+ 

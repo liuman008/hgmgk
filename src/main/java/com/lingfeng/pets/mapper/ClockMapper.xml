@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.ClockMapper">
+
+    <!-- 新增数据 -->
+    <insert id="insertClock" parameterType="com.lingfeng.pets.entity.ClockEntity">
+        INSERT INTO com_lingfeng_clock(
+               id,
+               content,
+               address,
+               userId,
+               releaseId,
+               create_date
+        )VALUES(
+               #{id, jdbcType=VARCHAR},
+               #{content, jdbcType=VARCHAR},
+               #{address, jdbcType=VARCHAR},
+               #{userId, jdbcType=VARCHAR},
+               #{releaseId, jdbcType=VARCHAR},
+               #{create_date, jdbcType=TIMESTAMP}
+        )
+    
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteClock" parameterType="com.lingfeng.pets.entity.ClockEntity">
+            UPDATE 
+                com_lingfeng_clock
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updateClock" parameterType="com.lingfeng.pets.entity.ClockEntity">
+        UPDATE
+            com_lingfeng_clock
+        <set>
+            <if test="content != null and content !=''">
+            content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null and address !=''">
+            address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null and userId !=''">
+            userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="releaseId != null and releaseId !=''">
+            releaseId = #{releaseId,jdbcType=VARCHAR},
+            </if>
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+        </set>
+            WHERE
+                id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询所有 -->
+    <select id="selectAllClock" resultType="com.lingfeng.pets.entity.ClockEntity">
+            SELECT
+               id,
+               content,
+               address,
+               userId,
+               releaseId,
+               create_date
+            FROM
+               com_lingfeng_clock
+            WHERE
+                is_del = 0
+    </select>
+    
+    <!-- 模糊分页查询 -->
+    <select id="selectLikeClocks" parameterType="com.lingfeng.pets.entity.ClockEntity" resultType="com.lingfeng.pets.entity.ClockEntity">
+            SELECT
+               id,
+               content,
+               address,
+               userId,
+               releaseId,
+               create_date
+            FROM
+               com_lingfeng_clock
+            <where>
+                is_del = 0
+                <if test="id != null and id !=''">
+                AND id = #{id,jdbcType=VARCHAR}
+                </if>
+                 <if test="content != null and content !=''">
+                AND content = #{content,jdbcType=VARCHAR}
+                </if>
+                <if test="address != null and address !=''">
+                AND address like concat(concat("%",#{address}),"%")
+                </if>
+                <if test="userId != null and userId !=''">
+                AND userId = #{userId,jdbcType=VARCHAR}
+                </if>
+                 <if test="releaseId != null and releaseId !=''">
+                AND releaseId = #{releaseId,jdbcType=VARCHAR}
+                </if>
+                <if test="create_date != null and create_date !=''">
+                AND create_date like concat(concat("%",#{create_date}),"%")
+                </if>
+                
+            </where>
+             ORDER BY create_date DESC
+             <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                LIMIT #{currIndex},#{pageSize}
+             </if>
+    </select>
+    
+     <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_banner
+        </select>
+</mapper>

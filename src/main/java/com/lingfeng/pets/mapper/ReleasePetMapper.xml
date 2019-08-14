@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.ReleasePetMapper">
+    <!-- 新增数据 -->
+    <insert id="insertReleasePet" parameterType="com.lingfeng.pets.entity.ReleasePetEntity">
+        INSERT INTO com_lingfeng_releasepet(
+            id,
+            maleandfemale,
+            name,
+            age,
+            is_vaccine,
+            is_insectRepellent,
+            is_sterilization,
+            weight,
+            varieties,
+            models,
+            allergy,
+            estrus,
+            distance,
+            longitude,
+            latitude,
+            type,
+            state,
+            userId,
+            address,
+            image,
+            content,
+            serviceCharge,
+            create_date
+        )
+        VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{maleandfemale, jdbcType=VARCHAR},
+            #{name, jdbcType=VARCHAR},
+            #{age, jdbcType=INTEGER},
+            #{is_vaccine, jdbcType=INTEGER},
+            #{is_insectRepellent, jdbcType=INTEGER},
+            #{is_sterilization, jdbcType=INTEGER},
+            #{weight, jdbcType=VARCHAR},
+            #{varieties, jdbcType=VARCHAR},
+            #{models, jdbcType=VARCHAR},
+            #{allergy, jdbcType=VARCHAR},
+            #{estrus, jdbcType=VARCHAR},
+            #{distance,jdbcType=DOUBLE},
+            #{longitude,jdbcType=DOUBLE},
+            #{latitude,jdbcType=DOUBLE},
+            #{type,jdbcType=INTEGER},
+            #{state,jdbcType=INTEGER},
+            #{userId,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR},
+            #{image,jdbcType=VARCHAR},
+            #{content,jdbcType=VARCHAR},
+            #{serviceCharge,jdbcType=DOUBLE},
+            #{create_date, jdbcType=TIMESTAMP}
+           
+        )
+    </insert>
+    <!-- 删除数据 -->
+    <update id="deleteReleasePet" parameterType="com.lingfeng.pets.entity.ReleasePetEntity">
+            UPDATE 
+                com_lingfeng_releasepet
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    <!-- 修改a数据 -->
+    <update id="updateReleasePet" parameterType="com.lingfeng.pets.entity.ReleasePetEntity">
+            UPDATE
+                com_lingfeng_releasepet
+            <set>
+                <if test="maleandfemale != null and maleandfemale !=''">
+                maleandfemale =# {maleandfemale, jdbcType=VARCHAR},
+                </if>
+                <if test="name != null and name !=''">
+                name =# {name, jdbcType=VARCHAR},
+                </if>
+                <if test="age != null and age !=''">
+                age =# {age, jdbcType=INTEGER},
+                </if>
+                <if test="is_vaccine != null and is_vaccine !=''">
+                is_vaccine =# {is_vaccine, jdbcType=INTEGER},
+                </if>
+                <if test="is_insectRepellent != null and is_insectRepellent !=''">
+                is_insectRepellent =# {is_insectRepellent, jdbcType=INTEGER},
+                </if>
+                <if test="is_sterilization != null and is_sterilization !=''">
+                is_sterilization =# {is_sterilization, jdbcType=INTEGER},
+                </if>
+                <if test="weight != null and weight !=''">
+                maleandfemale =# {maleandfemale, jdbcType=VARCHAR},
+                </if>
+                <if test="varieties != null and varieties !=''">
+                varieties =# {varieties, jdbcType=VARCHAR},
+                </if>
+                <if test="models != null and models !=''">
+                models =# {models, jdbcType=VARCHAR},
+                </if>
+                <if test="allergy != null and allergy !=''">
+                allergy =# {allergy, jdbcType=VARCHAR},
+                </if>
+                <if test="estrus != null and estrus !=''">
+                estrus =# {estrus, jdbcType=VARCHAR},
+                </if>
+                <if test="distance != null and distance !=''">
+                distance = #{distance, jdbcType=DOUBLE},
+                </if>
+                <if test="longitude != null and longitude !=''">
+                longitude = #{longitude, jdbcType=DOUBLE},
+                </if>
+                <if test="latitude != null and latitude !=''">
+                latitude = #{latitude, jdbcType=DOUBLE},
+                </if>
+                 <if test="type != null and type !=''">
+                type = #{type, jdbcType=INTEGER},
+                </if>
+                 <if test="state != null and state !=''">
+                state = #{state, jdbcType=INTEGER},
+                </if>
+                 <if test="userId != null and userId !=''">
+                userId = #{userId, jdbcType=VARCHAR},
+                </if>
+                 <if test="address != null and address !=''">
+                address = #{address, jdbcType=VARCHAR},
+                </if>
+                <if test="image != null and image !=''">
+                image = #{image, jdbcType=VARCHAR},
+                </if>
+                <if test="is_effective != null and is_effective !=''">
+                is_effective = #{is_effective, jdbcType=INTEGER},
+                </if>
+                <if test="serviceCharge != null and serviceCharge !=''">
+                serviceCharge = #{serviceCharge, jdbcType=DOUBLE},
+                </if>
+                update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+            <where>
+                <if test="id != null and id !=''">
+                     id = #{id, jdbcType=VARCHAR}
+                </if>
+                <if test="releaseId != null and releaseId !=''">
+                    releaseId = #{releaseId, jdbcType=VARCHAR} 
+                </if>
+            </where>
+    </update>
+    <!-- 查询数据 -->
+    <select id="selectAllReleasePet" resultType="com.lingfeng.pets.entity.ReleasePetEntity">
+        SELECT
+            id,
+            maleandfemale,
+            name,
+            age,
+            is_vaccine,
+            is_insectRepellent,
+            is_sterilization,
+            weight,
+            varieties,
+            models,
+            allergy,
+            estrus,
+            distance,
+            longitude,
+            latitude,
+            type,
+            state,
+            userId,
+            address,
+            image,
+            content,
+            serviceCharge,
+            create_date
+       FROM
+            com_lingfeng_releasepet
+       WHERE
+            is_del = 0
+       AND 
+            is_effective = 1
+    </select>
+    
+    <!-- 查询首页遛狗 或 寄养数据 -->
+    <select id="selectReleasePetBytype" parameterType="map" resultType="com.lingfeng.pets.entity.ReleasePetEntity">
+         SELECT
+            id,
+            maleandfemale,
+            name,
+            age,
+            is_vaccine,
+            is_insectRepellent,
+            is_sterilization,
+            weight,
+            varieties,
+            models,
+            allergy,
+            estrus,
+            distance,
+            longitude,
+            latitude,
+            type,
+            state,
+            userId,
+            address,
+            image,
+            content,
+            serviceCharge,
+            create_date
+       FROM
+            com_lingfeng_releasepet
+       WHERE
+            is_del = 0
+       AND
+           type = #{type}
+       AND
+           address like "%"#{address}"%" 
+       AND
+           state = 1
+       AND 
+           is_effective = 1
+            
+       ORDER BY create_date DESC
+    </select>
+    
+    <!-- 模糊查询  -->
+    <select id="selectLikeReleasePet" parameterType="com.lingfeng.pets.entity.ReleasePetEntity" resultType="com.lingfeng.pets.entity.ReleasePetEntity">
+          SELECT
+            id,
+            maleandfemale,
+            name,
+            age,
+            is_vaccine,
+            is_insectRepellent,
+            is_sterilization,
+            weight,
+            varieties,
+            models,
+            allergy,
+            estrus,
+            distance,
+            longitude,
+            latitude,
+            type,
+            state,
+            userId,
+            address,
+            image,
+            content,
+            serviceCharge,
+            create_date
+       FROM
+            com_lingfeng_releasepet
+       <where>
+            is_del = 0
+             AND   is_effective = 1
+             <if test="id != null and id !=''">
+              AND id = #{id, jdbcType=VARCHAR} 
+            </if>
+             <if test="type != null and type !=''">
+               AND type = #{type,jdbcType=INTEGER}
+             </if>
+            <if test="state != null and state != null">
+               AND state = #{state, jdbcType=INTEGER} 
+            </if>
+            <if test="userId != null and userId !=''">
+              AND userId = #{userId, jdbcType=VARCHAR} 
+            </if>
+             <if test="maleandfemale != null and maleandfemale !=''">
+             AND maleandfemale = #{maleandfemale, jdbcType=VARCHAR}
+             </if>
+            <if test="name != null and name !=''">
+             AND name = #{name, jdbcType=VARCHAR}
+            </if>
+             <if test="age != null and age !=''">
+            AND age = #{age, jdbcType=INTEGER}
+             </if>
+            <if test="is_vaccine != null and is_vaccine !=''">
+             AND is_vaccine = #{is_vaccine, jdbcType=INTEGER}
+            </if>
+            <if test="is_insectRepellent != null and is_insectRepellent !=''">
+            AND is_insectRepellent = #{is_insectRepellent, jdbcType=INTEGER}
+            </if>
+            <if test="is_sterilization != null and is_sterilization !=''">
+             AND is_sterilization = #{is_sterilization, jdbcType=INTEGER}
+            </if>
+            <if test="weight != null and weight !=''">
+             AND maleandfemale = #{maleandfemale, jdbcType=VARCHAR}
+             </if>
+             <if test="varieties != null and varieties !=''">
+              AND varieties = #{varieties, jdbcType=VARCHAR}
+             </if>
+             <if test="models != null and models !=''">
+              AND models = #{models, jdbcType=VARCHAR}
+              </if>
+             <if test="allergy != null and allergy !=''">
+              AND allergy = #{allergy, jdbcType=VARCHAR}
+              </if>
+              <if test="estrus != null and estrus !=''">
+              AND estrus = #{estrus, jdbcType=VARCHAR}
+              </if>
+             <if test="distance != null and distance !=''">
+              AND distance = #{distance, jdbcType=DOUBLE}
+             </if>
+             <if test="longitude != null and longitude !=''">
+              AND longitude = #{longitude, jdbcType=DOUBLE}
+              </if>
+             <if test="latitude != null and latitude !=''">
+             AND latitude = #{latitude, jdbcType=DOUBLE}
+             </if>
+              <if test="address != null and address !=''">
+              AND address = #{address, jdbcType=VARCHAR}
+              </if>
+       </where>
+       ORDER BY create_date DESC
+    </select>
+    
+    <!-- 查询寄养 -->
+    <select id="selectReleasePetFoster" parameterType="String" resultType="com.lingfeng.pets.entity.ReleaseAllEntity">
+        SELECT 
+            c1.id,
+            c1.maleandfemale,
+            c1.name,
+            c1.age,
+            c1.is_vaccine,
+            c1.is_insectRepellent,
+            c1.is_sterilization,
+            c1.weight,
+            c1.varieties,
+            c1.models,
+            c1.allergy,
+            c1.estrus,
+            c1.distance,
+            c1.longitude,
+            c1.latitude,
+            c1.type,
+            c1.state,
+            c1.userId,
+            c1.address,
+            c1.content,
+            c1.create_date,
+            c2.days,
+            c2.washNum,
+            c2.serviceCharge,
+            c2.remarks,
+            c2.story,
+            c2.conditionsofadoption,
+            c2.cardingConditions,
+            c2.certificatesImage
+        from 
+            com_lingfeng_releasepet c1
+        LEFT JOIN com_lingfeng_foster c2 on c1.id = c2.releaseId
+        <where>
+            <if test="id != null and id !=''">
+                c1.id = #{id, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <!-- 查询liugou -->
+    <select id="selectReleasePetWalkDog" parameterType="String" resultType="com.lingfeng.pets.entity.ReleaseAllEntity">
+        SELECT 
+            c1.id,
+            c1.maleandfemale,
+            c1.name,
+            c1.age,
+            c1.is_vaccine,
+            c1.is_insectRepellent,
+            c1.is_sterilization,
+            c1.weight,
+            c1.varieties,
+            c1.models,
+            c1.allergy,
+            c1.estrus,
+            c1.distance,
+            c1.longitude,
+            c1.latitude,
+            c1.type,
+            c1.state,
+            c1.userId,
+            c1.address,
+            c1.content,
+            c1.create_date,
+            c2.hoursDays,
+            c2.hoursWeeks,
+            c2.hoursMouth,
+            c2.money
+        from 
+            com_lingfeng_releasepet c1
+        LEFT JOIN com_lingfeng_walkdog c2 on c1.id = c2.releaseId
+        <where>
+            <if test="id != null and id !=''">
+                c1.id = #{id, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+     <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_releasepet
+        </select>
+          <!-- 根据用户id和状态查询数据 -->
+         <select id="selectReleasePetByuserIdandstate" parameterType="com.lingfeng.pets.entity.ReleasePetEntity" resultType="com.lingfeng.pets.entity.ReleasePetEntity">
+            SELECT
+            id,
+            maleandfemale,
+            name,
+            age,
+            is_vaccine,
+            is_insectRepellent,
+            is_sterilization,
+            weight,
+            varieties,
+            models,
+            allergy,
+            estrus,
+            distance,
+            longitude,
+            latitude,
+            type,
+            state,
+            userId,
+            address,
+            image,
+            content,
+            serviceCharge,
+            create_date
+       FROM
+            com_lingfeng_releasepet
+       WHERE
+            is_del = 0
+       AND
+            state = #{state, jdbcType=INTEGER} 
+       AND 
+            id = #{id, jdbcType=VARCHAR} 
+          </select>
+          
+          <select id="selectphone" parameterType="String" resultType="String">
+            SELECT 
+                 c2.phone
+            FROM com_lingfeng_releasepet  c1
+            LEFT JOIN com_lingfeng_user c2 on c1.userId = c2.id
+            WHERE c1.id = #{id, jdbcType=VARCHAR}
+          </select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.AddressMapper">
+        <insert id="insertAddress" parameterType="com.lingfeng.pets.entity.AddressEntity">
+            INSERT INTO com_lingfeng_address(
+                id,
+                addressName,
+                create_date
+            )VALUES(
+                #{id, jdbcType=VARCHAR},
+                #{addressName, jdbcType=VARCHAR},
+                #{create_date, jdbcType=TIMESTAMP}
+            )
+        </insert>
+        
+        <update id="deleteAddress" parameterType="com.lingfeng.pets.entity.AddressEntity">
+         UPDATE 
+                com_lingfeng_address
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+        </update>
+        
+        <update id="updateAddress" parameterType="com.lingfeng.pets.entity.AddressEntity">
+            UPDATE 
+                com_lingfeng_address
+             SET
+                addressName = #{addressName, jdbcType=VARCHAR},
+                update_date = #{update_date, jdbcType=TIMESTAMP},
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+        </update>
+        
+        <select id="selectAllAddress" resultType="com.lingfeng.pets.entity.AddressEntity">
+            SELECT
+                id,
+                addressName,
+                create_date
+            FROM
+                com_lingfeng_address
+            WHERE
+                is_del = 0
+        </select>
+        
+        <select id="selectlikeAddress" parameterType="com.lingfeng.pets.entity.AddressEntity" resultType="com.lingfeng.pets.entity.AddressEntity">
+            SELECT
+                id,
+                addressName,
+                create_date
+            FROM
+                com_lingfeng_address
+            <where>
+                <if test="addressName != null and addressName != null">
+                    addressName = #{addressName, jdbcType=VARCHAR}
+                </if>
+            </where>
+                <if test="currIndex != null and currIndex != '' and pageSize != null and pageSize != ''">
+                 LIMIT #{currIndex},#{pageSize}
+                </if>
+        </select>
+        
+        <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_address
+        </select>
+</mapper>

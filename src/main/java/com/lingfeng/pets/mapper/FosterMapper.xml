@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.FosterMapper">
+    
+    <!-- 新增遛狗信息 -->
+    <insert id="insertFoster" parameterType="com.lingfeng.pets.entity.FosterEntity">
+            INSERT INTO com_lingfeng_foster(
+                id,
+                days,
+                washNum,
+                serviceCharge,
+                remarks,
+                story,
+                conditionsofadoption,
+                cardingConditions,
+                certificatesImage,
+                releaseId,
+                create_date
+            )
+            VALUES(
+                #{id, jdbcType=VARCHAR},
+                #{days, jdbcType=INTEGER},
+                #{washNum, jdbcType=INTEGER},
+                #{serviceCharge, jdbcType=VARCHAR},
+                #{remarks, jdbcType=VARCHAR},
+                #{story, jdbcType=VARCHAR},
+                #{conditionsofadoption, jdbcType=VARCHAR},
+                #{cardingConditions, jdbcType=VARCHAR},
+                #{certificatesImage, jdbcType=VARCHAR},
+                #{releaseId, jdbcType=VARCHAR},
+                #{create_date, jdbcType=TIMESTAMP}
+            )
+            
+    </insert>
+    
+     <!-- 删除遛狗信息 -->
+    <update id="deleteFoster" parameterType="com.lingfeng.pets.entity.FosterEntity">
+            UPDATE 
+                com_lingfeng_foster
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+     <!-- 修改遛狗信息 -->
+    <update id="updateFoster" parameterType="com.lingfeng.pets.entity.FosterEntity">
+           UPDATE
+                com_lingfeng_foster
+           <set>
+                <if test="days != null and days !=''">
+                 days = #{days, jdbcType=INTEGER},
+                </if>
+                 <if test="washNum != null and washNum !=''">
+                washNum = #{washNum, jdbcType=INTEGER},
+                </if>
+                 <if test="serviceCharge != null and serviceCharge !=''">
+                 serviceCharge = #{serviceCharge, jdbcType=VARCHAR},
+                </if>
+                 <if test="remarks != null and remarks !=''">
+                 remarks = #{remarks, jdbcType=VARCHAR},
+                </if>
+                 <if test="story != null and story !=''">
+                story = #{story, jdbcType=VARCHAR},
+                </if>
+                 <if test="conditionsofadoption != null and conditionsofadoption !=''">
+                 conditionsofadoption = #{conditionsofadoption, jdbcType=VARCHAR},
+                </if>
+                <if test="cardingConditions != null and cardingConditions !=''">
+                cardingConditions = #{cardingConditions, jdbcType=VARCHAR},
+                </if>
+                <if test="certificatesImage != null and certificatesImage !=''">
+                certificatesImage = #{certificatesImage, jdbcType=VARCHAR},
+                </if>
+                 <if test="releaseId != null and releaseId !=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR},
+                </if>
+                update_date = #{update_date,jdbcType=TIMESTAMP}
+           </set>
+           WHERE
+               id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+     <!-- 查询遛狗信息 -->
+    <select id="selectAllFoster" resultType="com.lingfeng.pets.entity.FosterEntity">
+            SELECT
+                id,
+                days,
+                washNum,
+                serviceCharge,
+                remarks,
+                story,
+                conditionsofadoption,
+                cardingConditions,
+                certificatesImage,
+                create_date
+            FROM
+                com_lingfeng_foster
+            WHERE
+                is_del = 0
+    </select>
+       <!-- 模糊分院查询遛狗信息 -->
+    <select id="selectLikeFoster" parameterType="com.lingfeng.pets.entity.FosterEntity" resultType="com.lingfeng.pets.entity.FosterEntity">
+            SELECT
+                id,
+                days,
+                washNum,
+                serviceCharge,
+                remarks,
+                story,
+                conditionsofadoption,
+                cardingConditions,
+                certificatesImage,
+                create_date
+            FROM
+                com_lingfeng_foster
+            <where>
+                is_del = 0
+                <if test="days != null and days !=''">
+                AND days = #{days, jdbcType=INTEGER}
+                </if>
+                 <if test="washNum != null and washNum !=''">
+                AND washNum = #{washNum, jdbcType=INTEGER}
+                </if>
+                 <if test="serviceCharge != null and serviceCharge !=''">
+                AND serviceCharge = #{serviceCharge, jdbcType=VARCHAR}
+                </if>
+                 <if test="remarks != null and remarks !=''">
+                 AND remarks like concat(concat("%",#{remarks}),"%")
+                </if>
+                 <if test="story != null and story !=''">
+                AND story like concat(concat("%",#{remarks}),"%")
+                </if>
+                <if test="create_date != null and create_date !=''">
+                AND create_date = #{create_date, jdbcType=TIMESTAMP}
+                </if>
+            </where>
+             ORDER BY create_date 
+                 <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+                 </if>
+    </select>
+    
+      <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_foster
+        </select>
+    
+</mapper>

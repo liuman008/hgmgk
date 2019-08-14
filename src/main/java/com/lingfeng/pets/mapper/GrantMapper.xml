@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.GrantMapper">
+    <insert id="insertGrant" parameterType="com.lingfeng.pets.entity.GrantEntity">
+        INSERT INTO com_lingfeng_grant(
+            id,
+            releaseId,
+            uid,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{releaseId, jdbcType=VARCHAR},
+            #{uid, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+        
+    
+    </insert>
+    
+    <update id="deleteGrant" parameterType="com.lingfeng.pets.entity.GrantEntity">
+            UPDATE 
+                com_lingfeng_grant
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateGrant" parameterType="com.lingfeng.pets.entity.GrantEntity">
+            UPDATE 
+                com_lingfeng_grant
+           <set>
+                <if test="releaseId != null and releaseId!=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR},
+                </if>
+                <if test="uid != null and uid !=''">
+                uid = #{uid, jdbcType=VARCHAR},
+                </if>
+                <if test="is_del != null and is_del != null">
+                is_del = #{is_del, jdbcType=INTEGER},
+                </if>
+                update_date = #{update_date, jdbcType=TIMESTAMP}
+           </set>
+           <where>
+               <if test="id != null and id !=''">
+               id = #{id, jdbcType=VARCHAR}
+               </if>
+               <if test="releaseId != null and releaseId !='' and uid != null and uid !='' ">
+               releaseId = #{releaseId, jdbcType=VARCHAR} AND uid = #{uid, jdbcType=VARCHAR}
+               </if>
+           </where>
+                
+    </update>
+    
+    <select id="selectAllGrant" resultType="com.lingfeng.pets.entity.GrantEntity">
+            SELECT
+                id,
+                releaseId,
+                uid,
+                create_date
+            FROM
+                com_lingfeng_grant
+    </select>
+    
+    <select id="selectGrantByuid" parameterType="String" resultType="com.lingfeng.pets.entity.GrantEntity">
+           SELECT
+                id,
+                releaseId,
+                uid,
+                is_del,
+                create_date
+            FROM
+                com_lingfeng_grant
+            WHERE
+                uid = #{uid, jdbcType=VARCHAR}
+            AND
+               releaseId = #{releaseId, jdbcType=VARCHAR} 
+    </select>
+</mapper>   

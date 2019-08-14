@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.ReleaseImageMapper">
+    
+    <!-- 单个新增 -->
+    <insert id="insertReleaseImage" parameterType="com.lingfeng.pets.entity.ReleaseImageEntity">
+        INSERT INTO com_lingfeng_releaseimage(
+            id,
+            releaseId,
+            image,
+            create_date
+        )
+        VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{releaseId, jdbcType=VARCHAR},
+            #{image, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <!-- 批量新增 -->
+    <insert id="insertBatchReleaseImage" parameterType="list">
+        INSERT INTO com_lingfeng_releaseimage(
+            id,
+            releaseId,
+            image,
+            create_date
+            )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id, jdbcType=VARCHAR},
+             #{item.releaseId, jdbcType=VARCHAR},
+             #{item.image, jdbcType=VARCHAR},
+             #{item.create_date, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteReleaseImage" parameterType="com.lingfeng.pets.entity.ReleaseImageEntity">
+             UPDATE 
+                com_lingfeng_releaseimage
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updateReleaseImage" parameterType="com.lingfeng.pets.entity.ReleaseImageEntity">
+            UPDATE
+                com_lingfeng_releaseimage
+            <set>
+                <if test="releaseId != null and releaseId !=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR}
+                </if>
+                <if test="image != null and image !=''">
+                image = #{image, jdbcType=VARCHAR}
+                </if>
+               update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+            WHERE 
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询所有未被删除的数据 -->
+    <select id="selectAllReleaseImage" resultType="com.lingfeng.pets.entity.ReleaseImageEntity">
+        SELECT 
+            id,
+            releaseId,
+            image,
+            create_date
+        FROM
+            com_lingfeng_releaseimage
+        WHERE
+            is_del = 0
+    </select>
+    
+    <!-- 根据发布id查询数据 -->
+    <select id="selectReleaseImageByreleaseId" parameterType="String" resultType="com.lingfeng.pets.entity.ReleaseImageEntity">
+        SELECT 
+            id,
+            releaseId,
+            image,
+            create_date
+        FROM
+            com_lingfeng_releaseimage
+        <where>
+            is_del = 0
+            <if test="releaseId != null and releaseId !=''">
+            AND releaseId = #{releaseId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <!-- 分页查询 -->
+    <select id="selectLikeReleaseImage" parameterType="com.lingfeng.pets.entity.ReleaseImageEntity" resultType="com.lingfeng.pets.entity.ReleaseImageEntity">
+          SELECT 
+            id,
+            releaseId,
+            image,
+            create_date
+        FROM
+            com_lingfeng_releaseimage
+        <where>
+            is_del = 0
+           <if test="releaseId != null and releaseId !=''">
+            AND releaseId = #{releaseId, jdbcType=VARCHAR}
+           </if>
+           <if test="image != null and image !=''">
+            AND image = #{image, jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+        <if test="currIndex != null currIndex !='' and pageSize != null and pageSize !=''">
+         LIMIT #{currIndex},#{pageSize}
+        </if>
+    </select>
+    
+     <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_releaseimage
+        </select>
+</mapper>

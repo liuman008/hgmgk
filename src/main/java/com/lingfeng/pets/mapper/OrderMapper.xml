@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.OrderMapper">
+    <insert id="insertOrder" parameterType="com.lingfeng.pets.entity.OrderEntity">
+        INSERT INTO com_lingfeng_order(
+            id,
+            type,
+            orderId,
+            remarks,
+            openId,
+            accout,
+            status,
+            create_date
+        )
+        VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{type, jdbcType=VARCHAR},
+            #{orderId, jdbcType=VARCHAR},
+            #{remarks, jdbcType=VARCHAR},
+            #{openId, jdbcType=VARCHAR},
+            #{accout, jdbcType=VARCHAR},
+            #{status, jdbcType=INTEGER},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <update id="deleteOrder" parameterType="com.lingfeng.pets.entity.OrderEntity">
+             UPDATE 
+                com_lingfeng_order
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateOrder" parameterType="com.lingfeng.pets.entity.OrderEntity">
+            UPDATE
+                com_lingfeng_order
+            <set>
+                <if test="type != null and type !=''">
+                type = #{type, jdbcType=VARCHAR},
+                </if>
+                <if test="orderId != null and orderId !=''">
+                orderId = #{orderId, jdbcType=VARCHAR},
+                </if>
+                 <if test="remarks != null and remarks !=''">
+                remarks = #{remarks, jdbcType=VARCHAR},
+                </if>
+                 <if test="openId != null and openId !=''">
+                openId = #{openId, jdbcType=VARCHAR},
+                </if>
+                 <if test="status != null and status !=''">
+                status = #{status, jdbcType=INTEGER},
+                </if>
+                update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+             WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectAllOrder" resultType="com.lingfeng.pets.entity.OrderEntity">
+        SELECT
+             id,
+            type,
+            orderId,
+            remarks,
+            openId,
+            accout,
+            status,
+            create_date
+        FROM
+            com_lingfeng_order
+        WHERE
+            is_del = 0
+    </select>
+    
+    <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_order
+        </select>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.VaccineImageMapper">
+    
+    <!-- 单个新增 -->
+    <insert id="insertVaccine" parameterType="com.lingfeng.pets.entity.VaccineImageEntity">
+        INSERT INTO com_lingfeng_vaccine(
+            id,
+            releaseId,
+            vaccineImage,
+            create_date
+        )
+        VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{releaseId, jdbcType=VARCHAR},
+            #{vaccineImage, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <!-- 批量新增 -->
+    <insert id="insertBatchVaccine" parameterType="com.lingfeng.pets.entity.VaccineImageEntity">
+        INSERT INTO com_lingfeng_vaccine(
+            id,
+            releaseId,
+            vaccineImage,
+            create_date
+            )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+           (#{item.id, jdbcType=VARCHAR},
+            #{item.releaseId, jdbcType=VARCHAR},
+            #{item.vaccineImage, jdbcType=VARCHAR},
+            #{item.create_date, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteVaccine" parameterType="com.lingfeng.pets.entity.VaccineImageEntity">
+             UPDATE 
+                com_lingfeng_vaccine
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updateVaccine" parameterType="com.lingfeng.pets.entity.VaccineImageEntity">
+            UPDATE
+                com_lingfeng_vaccine
+            <set>
+                <if test="releaseId != null and releaseId !=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR}
+                </if>
+                <if test="vaccineImage != null and vaccineImage !=''">
+                vaccineImage = #{vaccineImage, jdbcType=VARCHAR}
+                </if>
+               update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+            WHERE 
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询所有未被删除的数据 -->
+    <select id="selectAllVaccine" resultType="com.lingfeng.pets.entity.VaccineImageEntity">
+        SELECT 
+            id,
+            releaseId,
+            vaccineImage,
+            create_date
+        FROM
+            com_lingfeng_vaccine
+        WHERE
+            is_del = 0
+    </select>
+    
+    <!-- 根据发布id查询数据 -->
+    <select id="selectVaccineByreleaseId" parameterType="String" resultType="com.lingfeng.pets.entity.VaccineImageEntity">
+        SELECT 
+            id,
+            releaseId,
+            vaccineImage,
+            create_date
+        FROM
+            com_lingfeng_vaccine
+        <where>
+            is_del = 0
+            <if test="releaseId != null and releaseId !=''">
+            AND releaseId = #{releaseId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+      <!-- 模糊分页查询 -->
+    <select id="selectLikeVaccine" parameterType="com.lingfeng.pets.entity.VaccineImageEntity" resultType="com.lingfeng.pets.entity.VaccineImageEntity">
+        SELECT 
+            id,
+            releaseId,
+            vaccineImage,
+            create_date
+        FROM
+            com_lingfeng_vaccine
+        <where>
+            is_del = 0
+            <if test="releaseId != null and releaseId !=''">
+            AND releaseId = #{releaseId, jdbcType=VARCHAR}
+            </if>
+        </where>
+          ORDER BY create_date DESC
+         <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+          LIMIT #{currIndex},#{pageSize}
+         </if> 
+    </select>
+    
+      <!-- 查询总行数 -->
+     <select id="selectCount" resultType="int">
+            select count(*) from com_lingfeng_vaccine
+     </select>
+</mapper>

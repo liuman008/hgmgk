@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.WalkDogMapper">
+
+    <!-- 新增数据 -->
+    <insert id="insertWalkDog" parameterType="com.lingfeng.pets.entity.WalkDogEntity">
+            INSERT INTO com_lingfeng_walkdog(
+                    id,
+                    hoursDays,
+                    hoursWeeks,
+                    hoursMouth,
+                    money,
+                    releaseId,
+                    create_date
+            )VALUES(
+                    #{id, jdbcType=VARCHAR},
+                    #{hoursDays, jdbcType=VARCHAR},
+                    #{hoursWeeks, jdbcType=VARCHAR},
+                    #{hoursMouth, jdbcType=VARCHAR},
+                    #{money, jdbcType=VARCHAR},
+                    #{releaseId, jdbcType=VARCHAR},
+                    #{create_date, jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteWalkDog" parameterType="com.lingfeng.pets.entity.WalkDogEntity">
+            UPDATE 
+                com_lingfeng_walkdog
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    <!-- 修改数据 -->
+    <update id="updateWalkDog" parameterType="com.lingfeng.pets.entity.WalkDogEntity">
+            UPDATE 
+                com_lingfeng_walkdog
+            <set>
+                 <if test="hoursDays != null and hoursDays != null">
+                 hoursDays = #{hoursDays, jdbcType=VARCHAR},
+                </if>
+                 <if test="hoursWeeks != null and hoursWeeks != null">
+                 hoursWeeks = #{hoursWeeks, jdbcType=VARCHAR},
+                </if>
+                 <if test="hoursMouth != null and hoursMouth != null">
+                 hoursMouth = #{hoursMouth, jdbcType=VARCHAR},
+                </if>
+                <if test="money != null and money != null">
+                money = #{money, jdbcType=VARCHAR},
+                </if>
+                <if test="releaseId != null and releaseId != null">
+                releaseId = #{releaseId, jdbcType=VARCHAR},
+                </if>
+                update_date = #{update, jdbcType=TIMESTAMP}
+            </set>
+             WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!--查询数据 -->
+    <select id="selectAllWalkDog" resultType="com.lingfeng.pets.entity.WalkDogEntity">
+             SELECT
+                    id,
+                    hoursDays,
+                    hoursWeeks,
+                    hoursMouth,
+                    money,
+                    releaseId,
+                    create_date 
+             FROM
+                com_lingfeng_walkdog
+    </select>
+    
+     <!--查询数据 -->
+    <select id="selectLikeWalkDog" parameterType="com.lingfeng.pets.entity.WalkDogEntity" resultType="com.lingfeng.pets.entity.WalkDogEntity">
+             SELECT
+                    id,
+                    hoursDays,
+                    hoursWeeks,
+                    hoursMouth,
+                    money,
+                    releaseId,
+                    create_date 
+             FROM
+                com_lingfeng_walkdog
+             <where>
+                is_del = 0
+                 <if test="hoursDays != null and hoursDays != null">
+                AND hoursDays = #{hoursDays, jdbcType=VARCHAR}
+                </if>
+                 <if test="hoursWeeks != null and hoursWeeks != null">
+                 AND hoursWeeks = #{hoursWeeks, jdbcType=VARCHAR}
+                </if>
+                 <if test="hoursMouth != null and hoursMouth != null">
+                 AND hoursMouth = #{hoursMouth, jdbcType=VARCHAR}
+                </if>
+                <if test="money != null and money != null">
+                AND money = #{money, jdbcType=VARCHAR}
+                </if>
+                <if test="releaseId != null and releaseId != null">
+                AND releaseId = #{releaseId, jdbcType=VARCHAR}
+                </if>
+             </where>   
+               ORDER BY create_date DESC
+              <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                    LIMIT #{currIndex},#{pageSize}
+              </if> 
+     </select>
+    
+      <!-- 查询总行数 -->
+     <select id="selectCount" resultType="int">
+            select count(*) from com_lingfeng_walkdog
+     </select>
+</mapper>

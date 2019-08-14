@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.ChargeMapper">
+    <insert id="insertCharge" parameterType="com.lingfeng.pets.entity.ChargeEntity">
+        INSERT INTO com_lingfeng_charge(
+             id,
+             physique,
+             money,
+             create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{physique, jdbcType=VARCHAR},
+            #{money, jdbcType=DOUBLE},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+        
+    </insert>
+    
+    <update id="deleteCharge" parameterType="com.lingfeng.pets.entity.ChargeEntity">
+           UPDATE 
+                com_lingfeng_charge
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateCharge" parameterType="com.lingfeng.pets.entity.ChargeEntity">
+            UPDATE 
+                com_lingfeng_charge
+            <set>
+                <if test="physique != null and physique != null">
+                   physique = #{physique, jdbcType=VARCHAR},
+                </if>
+                <if test="money != null and money !=''">
+                   money = #{money, jdbcType=DOUBLE},
+                </if>
+                   update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+           WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectAllCharge" resultType="com.lingfeng.pets.entity.ChargeEntity">
+            SELECT
+                 id,
+                 physique,
+                 money,
+                 create_date
+            FROM
+                com_lingfeng_charge
+    </select>
+    
+    <select id="selectLikeCharge" parameterType="com.lingfeng.pets.entity.ChargeEntity" resultType="com.lingfeng.pets.entity.ChargeEntity">
+            SELECT
+                 id,
+                 physique,
+                 money,
+                 create_date
+            FROM
+                com_lingfeng_charge
+            <where>
+                is_del = 0
+                <if test="id != null and id !=''">
+                AND id = #{id, jdbcType=VARCHAR}
+                </if>
+               <if test="physique != null and physique !=''">
+                AND  physique  = #{physique, jdbcType=VARCHAR}
+                </if>
+                <if test="money != null and money !=''">
+                AND  money  = #{money, jdbcType=VARCHAR}
+                </if>
+                <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+                </if>
+            </where>
+    </select>
+    
+</mapper>

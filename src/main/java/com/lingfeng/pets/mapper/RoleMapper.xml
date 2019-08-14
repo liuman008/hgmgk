@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.RoleMapper">
+    <!-- 新增角色信息 -->
+    <insert id="addRole" parameterType="com.lingfeng.pets.entity.RoleEntity">
+            INSERT INTO com_lingfeng_role(
+                id,
+                roleName,
+                create_date
+            )
+            VALUES(
+                #{id, jdbcType=VARCHAR},
+                #{roleName, jdbcType=VARCHAR},
+                #{create_date, jdbcType=TIMESTAMP}
+            )
+            
+    </insert>
+    
+    <!-- 删除角色信息 -->
+    <update id="deleteRole" parameterType="com.lingfeng.pets.entity.RoleEntity">
+          UPDATE 
+             com_lingfeng_role
+         SET
+             lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+             lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+             is_del = 1
+         WHERE
+             id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改角色信息 -->
+    <update id="updateRole" parameterType="com.lingfeng.pets.entity.RoleEntity">
+        UPDATE
+            com_lingfeng_role
+        SET
+            roleName = #{roleName, jdbcType=VARCHAR},
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+        WHERE
+            id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询所有角色信息 -->
+    <select id="selectRoleALL" resultType="com.lingfeng.pets.entity.RoleEntity">
+        SELECT
+            id,
+            roleName,
+            create_date
+        FROM
+            com_lingfeng_role
+        WHERE
+            is_del = 0
+    </select>
+    
+    <!-- 根据用户id查询角色表信息 -->
+    <select id="selectRoleByUserId" parameterType="String" resultType="com.lingfeng.pets.entity.RoleEntity">
+        SELECT
+           r1.id,
+           r1.roleName
+        FROM
+            com_lingfeng_role r1
+            LEFT JOIN com_lingfeng_user_role r2 on r1.id = r2.roleId
+        WHERE
+             r2.userId =#{userId, jdbcType=VARCHAR}
+    </select>
+</mapper>   

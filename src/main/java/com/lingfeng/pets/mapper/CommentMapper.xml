@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.CommentMapper">
+    <insert id="insertComment" parameterType="com.lingfeng.pets.entity.CommentEntity">
+        INSERT INTO com_lingfeng_comment(
+            id,
+            commentUserId,
+            commentContent,
+            petcircleId,
+            replyUserId,
+            paretId,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{commentUserId, jdbcType=VARCHAR},
+            #{commentContent, jdbcType=VARCHAR},
+            #{petcircleId, jdbcType=VARCHAR},
+            #{replyUserId, jdbcType=VARCHAR},
+            #{paretId, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <update id="deleteComment" parameterType="com.lingfeng.pets.entity.CommentEntity">
+            UPDATE 
+                com_lingfeng_comment
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateComment" parameterType="com.lingfeng.pets.entity.CommentEntity">
+            UPDATE 
+                com_lingfeng_comment
+            <set>
+                <if test="id != null and id !=''">
+                id = #{id, jdbcType=VARCHAR},
+                </if>
+                <if test="commentUserId != null and commentUserId !=''">
+                commentUserId = #{commentUserId, jdbcType=VARCHAR},
+                </if>
+                <if test="commentContent != null and commentContent !=''">
+                commentContent = #{commentContent, jdbcType=VARCHAR},
+                </if>
+                <if test="petcircleId != null and petcircleId !=''">
+                petcircleId = #{petcircleId, jdbcType=VARCHAR},
+                </if>
+                <if test="replyUserId != null and replyUserId !=''">
+                replyUserId = #{replyUserId, jdbcType=VARCHAR},
+                </if>
+                update_date = #{update_date, jdbcType=TIMESTAMP}
+            </set>
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询一级评论 -->
+    <select id="selectAllComment" parameterType="String" resultType="com.lingfeng.pets.entity.CommentEntity">
+        select
+            id,
+            commentUserId,
+            commentContent,
+            petcircleId,
+            replyUserId,
+            paretId,
+            create_date
+        FROM
+            com_lingfeng_comment
+        WHERE
+            is_del = 0
+        AND
+            paretId = 0
+        AND
+            petcircleId = #{petcircleId, jdbcType=VARCHAR}
+    </select>
+    
+    
+      <!-- 根据父id查询数据-->
+    <select id="selectAllCommentByparetId" parameterType="String" resultType="com.lingfeng.pets.entity.CommentEntity">
+        select
+            id,
+            commentUserId,
+            commentContent,
+            petcircleId,
+            replyUserId,
+            paretId,
+            create_date
+        FROM
+            com_lingfeng_comment
+        WHERE
+            is_del = 0
+        AND
+            paretId = #{paretId, jdbcType=VARCHAR}
+    </select>
+</mapper>

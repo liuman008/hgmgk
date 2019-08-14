@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.BillMapper">
+    <insert id="insertBill" parameterType="com.lingfeng.pets.entity.BillEntity">
+        INSERT INTO com_lingfeng_bill(
+            id,
+            content,
+            userId,
+            money,
+            is_output,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{content, jdbcType=VARCHAR},
+            #{userId, jdbcType=VARCHAR},
+            #{money, jdbcType=DOUBLE},
+            #{is_output, jdbcType=INTEGER},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <update id="deleteBill" parameterType="com.lingfeng.pets.entity.BillEntity">
+        UPDATE 
+                com_lingfeng_bill
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    
+    </update>
+    
+    <update id="updateBill" parameterType="com.lingfeng.pets.entity.BillEntity">
+         UPDATE 
+                com_lingfeng_bill
+         <set>
+            <if test="content != null and content !=''">
+                content = #{content, jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null and userId !=''">
+                userId = #{userId, jdbcType=VARCHAR},
+            </if>
+            <if test="money != null and money !=''">
+                money = #{money, jdbcType=DOUBLE},
+            </if>
+            <if test="is_output != null and is_output !=''">
+                is_output = #{is_output, jdbcType=INTEGER},
+            </if>
+            <if test="is_read != null and is_read !=''">
+                is_read = #{is_read, jdbcType=INTEGER},
+            </if>
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+         </set>
+         WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectAllBill" resultType="com.lingfeng.pets.entity.BillEntity">
+        SELECT
+            id,
+            content,
+            userId,
+            money,
+            is_output,
+            create_date
+        FROM
+            com_lingfeng_bill
+        WHERE   
+            is_del = 0
+    </select>
+    
+    <select id="selectLikeBill" parameterType="com.lingfeng.pets.entity.BillEntity" resultType="com.lingfeng.pets.entity.BillEntity">
+          SELECT
+            id,
+            content,
+            userId,
+            money,
+            is_output,
+            create_date
+        FROM
+            com_lingfeng_bill
+        <where>
+            is_del = 0
+            <if test="id != null and id !=''">
+              AND id = #{id, jdbcType=VARCHAR}
+            </if>
+            <if test="content != null and content !=''">
+              AND  content = #{content, jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId !=''">
+              AND  userId = #{userId, jdbcType=VARCHAR}
+            </if>
+            <if test="money != null and money !=''">
+              AND money = #{money, jdbcType=DOUBLE}
+            </if>
+            <if test="is_output != null and is_output !=''">
+              AND  is_output = #{is_output, jdbcType=INTEGER}
+            </if>
+            ORDER BY create_date DESC
+        </where>
+    </select>
+    
+    <select id="selectBillByuserIdandRead" parameterType="String" resultType="com.lingfeng.pets.entity.BillEntity">
+         SELECT
+            id,
+            content,
+            userId,
+            money,
+            is_output,
+            create_date
+        FROM
+            com_lingfeng_bill
+        WHERE
+            is_del = 0
+       AND is_read = 0
+       AND userId = #{userId, jdbcType=VARCHAR}
+    </select>
+</mapper>

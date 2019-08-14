@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.BackstageUserMapper">
+    
+    <!-- 新增 -->
+    <insert id="addBackstageUser" parameterType="com.lingfeng.pets.entity.BackstageUserEntity">
+        INSERT INTO com_lingfeng_backstage_user(
+            id,
+            userName,
+            password,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{userName, jdbcType=VARCHAR},
+            #{password, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <!-- 删除 -->
+    <update id="deleteBackstageUser" parameterType="com.lingfeng.pets.entity.BackstageUserEntity">
+         UPDATE 
+             com_lingfeng_backstage_user
+         SET
+             lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+             lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+             is_del = 1
+         WHERE
+             id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改 -->
+    <update id="updateBackstageUser" parameterType="com.lingfeng.pets.entity.BackstageUserEntity">
+          UPDATE
+               com_lingfeng_backstage_user
+          SET
+                userName = #{userName, jdbcType=VARCHAR},
+                password = #{password, jdbcType=VARCHAR},
+                create_date = #{create_date, jdbcType=TIMESTAMP}
+          WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询 -->
+    <select id="selectBackstageUserALL" resultType="com.lingfeng.pets.entity.BackstageUserEntity">
+           SELECT
+                id,
+                userName,
+                password,
+                create_date
+           FROM
+                com_lingfeng_backstage_user
+           WHERE
+                is_del = 0
+    </select>
+    
+    <!-- 分页查询 -->
+    <select id="queryBackstageUserBySql" parameterType="map" resultType="com.lingfeng.pets.entity.BackstageUserEntity">
+           SELECT
+                id,
+                userName,
+                password,
+                create_date
+           FROM
+                com_lingfeng_backstage_user
+           WHERE
+                is_del = 0
+           LIMIT  #{currIndex} , #{pageSize}
+    </select>
+    
+    <!-- 模糊分页查询 -->
+    <select id="likeBackstageUser" parameterType="com.lingfeng.pets.entity.BackstageUserEntity" resultType="com.lingfeng.pets.entity.BackstageUserEntity">
+        SELECT
+            id,
+            userName,
+            password,
+            create_date
+        FROM
+            com_lingfeng_backstage_user
+        <where>
+            is_del = 0
+            <if test="id != null and id !=''">
+            AND id = #{id , jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName !=''">
+            AND userName = #{userName , jdbcType=VARCHAR}
+            </if>
+            
+        </where>
+        ORDER BY create_date DESC
+         <if test="currIndex != null and currIndex != '' and pageSize != null and pageSize != ''">
+                 LIMIT #{currIndex},#{pageSize}
+         </if>
+    </select>
+    
+    <!-- 登录 -->
+    <select id="login" parameterType="String" resultType="com.lingfeng.pets.entity.BackstageUserEntity">
+        SELECT
+            id,
+            userName,
+            password,
+            create_date
+        FROM
+            com_lingfeng_backstage_user
+        WHERE
+            is_del = 0
+        AND
+            userName = #{userName, jdbcType=VARCHAR}
+        AND 
+            password = #{userPass, jdbcType=VARCHAR}    
+    </select>
+    
+    <!-- 根据用户名查询数据 -->
+    <select id="selectBackstageUserByuserName" parameterType="String" resultType="com.lingfeng.pets.entity.BackstageUserEntity">
+        SELECT
+            id,
+            userName,
+            password,
+            create_date
+        FROM
+            com_lingfeng_backstage_user
+        WHERE
+            is_del = 0
+        AND
+            userName = #{userName, jdbcType=VARCHAR}
+    </select>
+    
+    <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_backstage_user
+        </select>
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.AssistMapper">
+    
+    <!-- 新增数据 -->
+    <insert id="insertAssist" parameterType="com.lingfeng.pets.entity.AssistEntity">
+        INSERT INTO com_lingfeng_assist(
+            id,
+            userId,
+            name,
+            experience,
+            phone,
+            address,
+            remark,
+            wechatNumber,
+            sex,
+            releaseId,
+            score,
+            writtenWords,
+            serviceCharge,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{userId, jdbcType=VARCHAR},
+            #{name, jdbcType=VARCHAR},
+            #{experience, jdbcType=VARCHAR},
+            #{phone, jdbcType=VARCHAR},
+            #{address, jdbcType=VARCHAR},
+            #{remark, jdbcType=VARCHAR},
+            #{wechatNumber, jdbcType=VARCHAR},
+            #{sex, jdbcType=VARCHAR},
+            #{releaseId, jdbcType=VARCHAR},
+            #{score, jdbcType=INTEGER},
+            #{writtenWords, jdbcType=VARCHAR},
+            #{serviceCharge, jdbcType=DOUBLE},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteAssist" parameterType="com.lingfeng.pets.entity.AssistEntity">
+            UPDATE 
+                com_lingfeng_assist
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updateAssist" parameterType="com.lingfeng.pets.entity.AssistEntity">
+            UPDATE
+                com_lingfeng_assist
+            <set>
+                <if test="userId != null and userId !=''">
+                userId = #{userId, jdbcType=VARCHAR},
+                </if>
+                <if test="name != null and name !=''">
+                name = #{name, jdbcType=VARCHAR},
+                </if>
+                <if test="experience != null and experience !=''">
+                experience = #{experience, jdbcType=VARCHAR},
+                </if>
+                <if test="phone != null and phone !=''">
+                phone = #{phone, jdbcType=VARCHAR},
+                </if>
+                <if test="address != null and address !=''">
+                address = #{address, jdbcType=VARCHAR},
+                </if>
+                <if test="remark != null and remark !=''">
+                remark = #{remark, jdbcType=VARCHAR},
+                </if>
+                <if test="wechatNumber != null and wechatNumber !=''">
+                wechatNumber = #{wechatNumber, jdbcType=VARCHAR},
+                </if>
+                <if test="sex != null and sex !=''">
+                sex = #{sex, jdbcType=VARCHAR},
+                </if>
+                <if test="releaseId != null and releaseId !=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR},
+                </if>
+                <if test="score != null and score !=''">
+                score = #{score, jdbcType=INTEGER},
+                </if>
+                <if test="writtenWords != null and writtenWords !=''">
+                writtenWords = #{writtenWords, jdbcType=VARCHAR},
+                </if>
+                <if test="state != null and state !=''">
+                state = #{state, jdbcType=INTEGER},
+                </if>
+                <if test="serviceCharge != null and serviceCharge !=''">
+                serviceCharge = #{serviceCharge, jdbcType=DOUBLE},
+                </if>
+                update_date = #{update_date,jdbcType=TIMESTAMP}
+            </set>
+            <where>
+                 <if test="id != null and id !=''">
+                id = #{id, jdbcType=VARCHAR}
+                </if>
+                <if test="releaseId != null and releaseId !=''">
+                releaseId = #{releaseId, jdbcType=VARCHAR}
+                </if>
+            </where>
+                 
+    </update>
+    
+    <!-- 查询所有 -->
+    <select id="selectAllAssist" resultType="com.lingfeng.pets.entity.AssistEntity">
+        SELECT
+            id,
+            userId,
+            name,
+            experience,
+            phone,
+            address,
+            remark,
+            wechatNumber,
+            sex,
+            releaseId,
+            score,
+            writtenWords,
+            serviceCharge,
+            create_date
+        FROM
+            com_lingfeng_assist
+        WHERE
+            is_del = 0
+    </select>
+    
+    <!-- 根据发布id查询数据 -->
+    <select id="selectAssistByreleaseId" parameterType="String" resultType="com.lingfeng.pets.entity.AssistEntity">
+        SELECT
+            id,
+            userId,
+            name,
+            experience,
+            phone,
+            address,
+            remark,
+            wechatNumber,
+            sex,
+            releaseId,
+            score,
+            writtenWords,
+            serviceCharge,
+            create_date
+        FROM
+            com_lingfeng_assist
+        WHERE
+            is_del = 0
+        AND
+            releaseId = #{releaseId, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectLikeAssist" parameterType="com.lingfeng.pets.entity.AssistEntity" resultType="com.lingfeng.pets.entity.AssistEntity">
+        SELECT
+            id,
+            userId,
+            name,
+            experience,
+            phone,
+            address,
+            remark,
+            wechatNumber,
+            sex,
+            releaseId,
+            score,
+            writtenWords,
+            serviceCharge,
+            create_date
+        FROM
+            com_lingfeng_assist
+       <where>
+              is_del = 0
+             <if test="userId != null and userId !=''">
+            AND userId = #{userId,jdbcType=VARCHAR}
+            </if>
+             <if test="name != null and name !=''">
+            AND name = #{name,jdbcType=VARCHAR}
+            </if>
+             <if test="experience != null and experience !=''">
+            AND experience = #{experience,jdbcType=VARCHAR}
+            </if>
+             <if test="phone != null and phone !=''">
+            AND phone = #{phone,jdbcType=VARCHAR}
+            </if>
+             <if test="address != null and address !=''">
+            AND address = #{address,jdbcType=VARCHAR}
+            </if>
+             <if test="wechatNumber != null and wechatNumber !=''">
+            AND wechatNumber = #{wechatNumber,jdbcType=VARCHAR}
+            </if>
+             <if test="releaseId != null and releaseId !=''">
+            AND releaseId = #{releaseId,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceCharge != null and serviceCharge !=''">
+            AND serviceCharge = #{serviceCharge,jdbcType=DOUBLE}
+            </if>
+       </where>
+       ORDER BY create_date DESC
+        <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+            </if>
+    </select>
+    
+     <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_assist
+        </select>
+</mapper>

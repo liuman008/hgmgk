@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.BannerMapper">
+    
+    <!-- 新增数据 -->
+    <insert id="insertBanner" parameterType="com.lingfeng.pets.entity.BannerEntity">
+        INSERT INTO com_lingfeng_banner(
+            id,
+            image,
+            create_date
+        )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{image, jdbcType=VARCHAR},
+            #{create_date, jdbcType=TIMESTAMP}
+        )
+        
+        
+    </insert>
+    
+    <!-- 删除数据 -->
+    <update id="deleteBanner" parameterType="com.lingfeng.pets.entity.BannerEntity">
+            UPDATE 
+                com_lingfeng_banner
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 修改数据 -->
+    <update id="updateBanner" parameterType="com.lingfeng.pets.entity.BannerEntity">
+        UPDATE
+            com_lingfeng_banner
+        SET
+            image = #{image, jdbcType=VARCHAR}
+        WHERE
+            id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 查询数据 -->
+    <select id="selectAllBanner" resultType="com.lingfeng.pets.entity.BannerEntity">
+        SELECT
+            id,
+            image,
+            create_date
+        FROM
+            com_lingfeng_banner
+        WHERE
+            is_del = 0
+    </select>
+    
+    <select id="selectLikeBanner"  parameterType="com.lingfeng.pets.entity.BannerEntity" resultType="com.lingfeng.pets.entity.BannerEntity">
+        SELECT
+            id,
+            image,
+            create_date
+        FROM
+            com_lingfeng_banner
+        <where>
+            is_del = 0 or is_del = 1
+            <if test="id != null and id !=''">
+               AND id = #{id, jdbcType=VARCHAR} 
+            </if>
+            <if test="image != null and image !=''">
+               AND image = #{image, jdbcType=VARCHAR} 
+            </if>
+             <if test="create_date != null and create_date !=''">
+               AND create_date = #{create_date, jdbcType=TIMESTAMP} 
+            </if>
+        </where>
+            ORDER BY create_date DESC
+            <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+            </if>
+    </select>
+    
+    <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_banner
+        </select>
+</mapper>

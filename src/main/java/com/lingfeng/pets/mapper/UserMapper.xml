@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.UserMapper">
+
+        <!-- 新增数据 -->
+        <insert id="insertUser" parameterType="com.lingfeng.pets.entity.UserEntity">
+            INSERT INTO com_lingfeng_user(
+                id,
+                userName,
+                likeName,
+                age,
+                sex,
+                phone,
+                address,
+                frontphotoofIDcard,
+                counterphotoofIDcard,
+                integral,
+                balance,
+                openid,
+                image,
+                cardNumber,
+                create_date
+            )
+            VALUES(
+                #{id, jdbcType=VARCHAR},
+                #{likeName, jdbcType=VARCHAR},
+                #{userName, jdbcType=VARCHAR},
+                #{age, jdbcType=INTEGER},
+                #{sex, jdbcType=VARCHAR},
+                #{phone, jdbcType=VARCHAR},
+                #{address, jdbcType=VARCHAR},
+                #{frontphotoofIDcard, jdbcType=VARCHAR},
+                #{counterphotoofIDcard, jdbcType=VARCHAR},
+                #{integral, jdbcType=INTEGER},
+                #{balance, jdbcType=DOUBLE},
+                #{openid, jdbcType=VARCHAR},
+                #{image, jdbcType=VARCHAR},
+                #{cardNumber, jdbcType=VARCHAR},
+                #{create_date, jdbcType=TIMESTAMP}
+            )
+        </insert>
+        
+        <update id="deleteUser" parameterType="com.lingfeng.pets.entity.UserEntity">
+            UPDATE 
+                com_lingfeng_user
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+        </update>
+        
+        <update id="updateUser" parameterType="com.lingfeng.pets.entity.UserEntity">
+            UPDATE
+                com_lingfeng_user
+            <set>
+                <if test="likeName != null and likeName !=''">
+                likeName = #{likeName, jdbcType=VARCHAR},
+                </if>
+                <if test="userName != null and userName !=''">
+                userName = #{userName, jdbcType=VARCHAR},
+                </if>
+                <if test="age != null and age !=''">
+                age = #{age, jdbcType=VARCHAR},
+                </if>
+                <if test="sex != null and sex !=''">
+                sex = #{sex, jdbcType=VARCHAR},
+                </if>
+                <if test="phone != null and phone !=''">
+                phone = #{phone, jdbcType=VARCHAR},
+                </if>
+                <if test="address != null and address !=''">
+                address = #{address, jdbcType=VARCHAR},
+                </if>
+                <if test="frontphotoofIDcard != null and frontphotoofIDcard !=''">
+                frontphotoofIDcard = #{frontphotoofIDcard, jdbcType=VARCHAR},
+                </if>
+                <if test="counterphotoofIDcard != null and counterphotoofIDcard !=''">
+                counterphotoofIDcard = #{counterphotoofIDcard, jdbcType=VARCHAR},
+                </if>
+                <if test="integral != null and integral !=''">
+                integral = #{integral, jdbcType=VARCHAR},
+                </if>
+                <if test="balance != null and balance !=''">
+                balance = #{balance, jdbcType=DOUBLE},
+                </if>
+                <if test="openid != null and openid !=''">
+                openid = #{openid, jdbcType=VARCHAR},
+                </if>
+                <if test="image != null and image !=''">
+                image = #{image, jdbcType=VARCHAR},
+                </if>
+                <if test="cardNumber != null and cardNumber !=''">
+                cardNumber = #{cardNumber, jdbcType=VARCHAR},
+                </if>
+                update_date = #{update_date}
+            </set>
+                WHERE
+                id = #{id, jdbcType=VARCHAR}
+        </update>
+        
+        <select id="selectAll" resultType="com.lingfeng.pets.entity.UserEntity">
+               SELECT
+                    id,
+                    userName,
+                    likeName,
+                    age,
+                    sex,
+                    phone,
+                    address,
+                    frontphotoofIDcard,
+                    counterphotoofIDcard,
+                    integral,
+                    balance,
+                    image,
+                    openid,
+                    cardNumber,
+                    create_date
+              FROM
+                 com_lingfeng_user
+              WHERE 
+                    is_del = 0
+        </select>
+        <!-- 根据id查询数据 -->
+        <select id="selectUserByopenId" parameterType="String" resultType="com.lingfeng.pets.entity.UserEntity">
+                SELECT 
+                    id,
+                    userName,
+                    likeName,
+                    age,
+                    sex,
+                    phone,
+                    address,
+                    frontphotoofIDcard,
+                    counterphotoofIDcard,
+                    integral,
+                    balance,
+                    image,
+                    openid,
+                    create_date
+                FROM
+                    com_lingfeng_user
+                <where>
+                    is_del = 0
+                    <if test="openid != null and openid !=''">
+                    AND openid = #{openid, jdbcType=VARCHAR}  
+                    </if>
+                </where>       
+        </select>
+        
+        <!-- 根据id查询数据 -->
+        <select id="selectUserByid" parameterType="String" resultType="com.lingfeng.pets.entity.UserEntity">
+             SELECT 
+                    id,
+                    userName,
+                    likeName,
+                    age,
+                    sex,
+                    phone,
+                    address,
+                    frontphotoofIDcard,
+                    counterphotoofIDcard,
+                    integral,
+                    balance,
+                    image,
+                    openid,
+                    cardNumber,
+                    create_date
+                FROM
+                    com_lingfeng_user
+                WHERE
+                    id = #{id, jdbcType=VARCHAR}
+        </select>
+        
+        
+        
+         
+        <!-- 根据id查询数据 -->
+        <select id="selectLikeUser" parameterType="com.lingfeng.pets.entity.UserEntity" resultType="com.lingfeng.pets.entity.UserEntity">
+             SELECT 
+                    id,
+                    userName,
+                    likeName,
+                    age,
+                    sex,
+                    phone,
+                    address,
+                    frontphotoofIDcard,
+                    counterphotoofIDcard,
+                    integral,
+                    balance,
+                    image,
+                    openid,
+                    cardNumber,
+                    create_date
+                FROM
+                    com_lingfeng_user
+                <where>
+                    is_del = 0
+               <if test="id != null and id !=''">
+                AND id = #{id, jdbcType=VARCHAR}
+               </if>
+               <if test="likeName != null and likeName !=''">
+                AND likeName like concat(concat("%",#{likeName}),"%")
+                </if>
+                <if test="userName != null and userName !=''">
+                AND userName like concat(concat("%",#{userName}),"%")
+                </if>
+                <if test="age != null and age !=''">
+                AND age = #{age, jdbcType=VARCHAR},
+                </if>
+                <if test="sex != null and sex !=''">
+                AND sex = #{sex, jdbcType=VARCHAR},
+                </if>
+                <if test="phone != null and phone !=''">
+                AND phone  like concat(concat("%",#{phone}),"%")
+                </if>
+                <if test="address != null and address !=''">
+                AND address  like concat(concat("%",#{address}),"%")
+                </if>
+                <if test="frontphotoofIDcard != null and frontphotoofIDcard !=''">
+                AND frontphotoofIDcard = #{frontphotoofIDcard, jdbcType=VARCHAR}
+                </if>
+                <if test="counterphotoofIDcard != null and counterphotoofIDcard !=''">
+                AND counterphotoofIDcard = #{counterphotoofIDcard, jdbcType=VARCHAR}
+                </if>
+                <if test="integral != null and integral !=''">
+                AND integral = #{integral, jdbcType=VARCHAR}
+                </if>
+                <if test="balance != null and balance !=''">
+                AND balance = #{balance, jdbcType=DOUBLE}
+                </if>
+                <if test="openid != null and openid !=''">
+                AND openid = #{openid, jdbcType=VARCHAR}
+                </if>
+                <if test="image != null and image !=''">
+                AND image = #{image, jdbcType=VARCHAR}
+                </if>
+                </where>
+                 ORDER BY create_date DESC
+               <if test="currIndex != null and currIndex !='' and pageSize != null and pageSize !=''">
+                  LIMIT #{currIndex},#{pageSize}
+               </if> 
+        </select>
+        
+         <!-- 查询总行数 -->
+        <select id="selectCount" resultType="int">
+                select count(*) from com_lingfeng_user
+        </select>
+</mapper>

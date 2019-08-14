@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lingfeng.pets.mapper.WithdrawMapper">
+    <insert id="addWithdraw" parameterType="com.lingfeng.pets.entity.WithdrawEntity">
+          INSERT INTO com_lingfeng_withdraw(
+            id,
+            userId,
+            account,
+            create_date
+          )VALUES(
+            #{id, jdbcType=VARCHAR},
+            #{userId, jdbcType=VARCHAR},
+            #{account, jdbcType=DOUBLE},
+            #{create_date, jdbcType=TIMESTAMP}
+          )
+    </insert>
+    
+    <update id="deleteWithdraw" parameterType="com.lingfeng.pets.entity.WithdrawEntity">
+         UPDATE 
+                com_lingfeng_withdraw
+            SET
+                lastModel_by = #{lastModel_by, jdbcType=VARCHAR},
+                lastModel_date = #{lastModel_date, jdbcType=TIMESTAMP},
+                is_del = 1
+            WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateWithdraw" parameterType="com.lingfeng.pets.entity.WithdrawEntity">
+         UPDATE 
+                com_lingfeng_withdraw
+         <set>
+            <if test="userId != null and userId !=''">
+                userId = #{userId, jdbcType=VARCHAR},
+            </if> 
+            <if test="account != null and account !=''">
+                account = #{account, jdbcType=DOUBLE},
+            </if>
+            <if test="state != null and state !=''">
+                state = #{state, jdbcType=INTEGER},
+            </if>
+            update_date = #{update_date, jdbcType=TIMESTAMP}
+         </set>
+         WHERE
+                id = #{id, jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectWithdrawALL" resultType="com.lingfeng.pets.entity.WithdrawEntity">
+            SELECT
+                id,
+                userId,
+                account,
+                state,
+                create_date 
+           FROM
+                com_lingfeng_withdraw
+           WHERE
+                is_del = 0
+    </select>
+</mapper>
